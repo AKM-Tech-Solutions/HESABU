@@ -5,12 +5,15 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const userRoute = require("./routes/userRoute");
 const errorHandler = require("./middleWare/errorMiddleware");
+const cookierParser = require("cookie-parser");
 
 const app = express();
 //my middlewares
 app.use(express.json());
+app.use(cookierParser());
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(cors());
 
 //middleware for routes
 app.use("/api/users", userRoute);
@@ -23,7 +26,7 @@ app.get("/", (req, res) => {
 //error handler should be before firing the server
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 //connect to database first then to port
 mongoose
