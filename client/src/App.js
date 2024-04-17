@@ -6,12 +6,14 @@ import Inventory from "./Pages/Inventory";
 import Reports from "./Pages/Reports";
 import Transactions from "./Pages/Transactions";
 import Profile from "./Pages/Profile";
+import Header from "./Components/Header";
 
 function App() {
   return (
     <div>
       <Router>
         <Navbar>
+          <Header />
           <Routes>
             <Route path="/Dashboard" element={<Dashboard />} />
             <Route path="/Inventory" element={<Inventory />} />

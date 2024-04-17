@@ -1,0 +1,133 @@
+{
+    "cards":[
+        {
+            "_id":1,
+            "name":"sales",
+            "icon":"bi bi-cart",
+            "amount": 145,
+            "percentage": 0.12,
+            "active": true
+        },
+        
+        {
+            "_id":2,
+            "name":"revenue",
+            "icon":"bi bi-currency-dollar",
+            "amount": 3246,
+            "percentage": 0.08,
+            "active": true
+        },
+        
+        {
+            "_id":3,
+            "name":"Customers",
+            "icon":"bi bi-people",
+            "amount": 145,
+            "percentage": 0.12,
+            "active": true
+        }   
+    ],
+
+    "topselling":[
+        {
+            "_id": 1,
+            "preview":"../assets/folder.png",
+            "name": "this was toppselling",
+            "price": 64,
+            "sold":124
+        },
+        {
+            "_id": 2,
+            "preview":"../assets/folder.png",
+            "name": "this was toppselling",
+            "price": 64,
+            "sold":124
+        },
+        {
+            "_id": 3,
+            "preview":"../assets/folder.png",
+            "name": "this was toppselling",
+            "price": 64,
+            "sold":124
+        },
+        {
+            "_id": 4,
+            "preview":"../assets/folder.png",
+            "name": "this was toppselling",
+            "price": 64,
+            "sold":124
+        },
+        {
+            "_id": 5,
+            "preview":"../assets/folder.png",
+            "name": "this was toppselling",
+            "price": 64,
+            "sold":124
+        }
+        
+    ],
+
+    "recentsales":[
+        {
+            "_id": 1,
+            "preview":"../assets/folder.png",
+            "name": "this was toppselling",
+            "price": 64,
+            "sold":124
+        },
+        {
+            "_id": 2,
+            "number": "#1324d",
+            "preview":"../assets/folder.png",
+            "name": "this was toppselling",
+            "price": 64,
+            "sold":124
+        },
+        {
+            "_id": 3,
+            "number": "#1324d",
+            "preview":"../assets/folder.png",
+            "name": "this was toppselling",
+            "price": 64,
+            "sold":124
+        },
+        {
+            "_id": 4,
+            "number": "#1324d",
+            "preview":"../assets/folder.png",
+            "name": "this was toppselling",
+            "price": 64,
+            "sold":124
+        }
+    ],
+    "recentactivity":[
+        {
+            "_id":1,
+            "time":"32 min",
+            "color":"text-success",
+            "content":"contentssss",
+            "highlight":"explicabo officilis"
+        },
+        {
+            "_id":2,
+            "time":"32 min",
+            "color":"text-success",
+            "content":"contentssss",
+            "highlight":"explicabo officilis"
+        },
+        {
+            "_id":3,
+            "time":"32 min",
+            "color":"text-success",
+            "content":"contentssss",
+            "highlight":"explicabo officilis"
+        },
+        {
+            "_id":4,
+            "time":"32 min",
+            "color":"text-success",
+            "content":"contentssss",
+            "highlight":"explicabo officilis"
+        }
+    ]
+}

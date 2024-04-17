@@ -41,9 +41,9 @@ const Navbar = ({ children }) => {
       <div style={{ width: isOpen ? "200px" : "50px" }} className="navbar">
         <div className="top-section">
           <h1 style={{ display: isOpen ? "block" : "none" }} className="logo">
-            Dorchester
+            Welcome 😊! {/**get name from the user */}
           </h1>
-          <div style={{ marginLeft: isOpen ? "50px" : "0px" }} className="bars">
+          <div style={{ marginLeft: isOpen ? "5px" : "0px" }} className="bars">
             <FaBars onClick={toggle} />
           </div>
         </div>
@@ -64,7 +64,7 @@ const Navbar = ({ children }) => {
           </NavLink>
         ))}
       </div>
-      <main>{children}</main>
+      <main style={{ backgroundColor: "" }}>{children}</main>
     </div>
   );
 };

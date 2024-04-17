@@ -1,0 +1,72 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;500;600;700;800;900;1000&family=Roboto:wght@100;300;400;500;700;900&display=swap");
+
+:root{
+    scroll-behavior: smooth;
+    --primary: #4154f1;
+    --second: #717ff5;
+    --bgcolor: #f6f9ff;
+}
+body{
+    font-family: 'Open Sans', sans-serif;
+    color: #444444;
+    background: var(--bgcolor);
+
+}
+
+ a{
+    color: #4154f1;
+    text-decoration: none;
+    cursor: pointer;
+ }
+
+ a:hover{
+    color: #717ff5;
+    text-decoration: none;
+
+ }
+ h1,h2,h3,h4,h5,h6{
+    font-family: "Nunito", sans-serif;
+ }
+ .dashboard{
+   width: Fixed (790px)px;
+height: Hug (159px)px;
+top: 76px;
+left: 292px;
+padding: 28px 43px 28px 43px;
+gap: 12px;
+border: 0px 1px 1px 0px;
+opacity: 0px;
+
+ }
+.dashboard2{
+   width: Fixed (790px)px;
+height: Hug (374.24px)px;
+top: 233px;
+left: 292px;
+padding: 25.71px 29.14px 25.71px 29.14px;
+gap: 17.14px;
+border: 0px 1px 1px 0px;
+opacity: 0px;
+
+}
+.dashboard3{
+   width: 789px;
+height: 306px;
+top: 607px;
+left: 292px;
+gap: 17.14px;
+border: 0px 0px 1px 0px;
+opacity: 0px;
+
+}
+.admin{
+   width: Fixed (358px)px;
+height: Fixed (105px)px;
+top: 76px;
+left: 1082px;
+padding: 24px 40px 24px 40px;
+gap: 10px;
+border: 0px 0px 1px 0px;
+opacity: 0px;
+
+}
