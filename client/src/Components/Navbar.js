@@ -64,7 +64,7 @@ const Navbar = ({ children }) => {
           </NavLink>
         ))}
       </div>
-      <main style={{ backgroundColor: "" }}>{children}</main>
+      <main>{children}</main>
     </div>
   );
 };

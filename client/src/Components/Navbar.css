@@ -12,13 +12,11 @@ main {
   
   padding: 20px;
   padding-top: 80px;
-  height: 100vh;
   width:100vw;
 
 }
 .container{
-  display: flex; 
-  margin-top: 200;
+  display: flex;
 
 
   
@@ -26,13 +24,13 @@ main {
 
 
 .navbar {
-  background-color: #f4f5fc;
+  background-color: #CED4DA;
   color: #000;
-  height: 80vh;
-  transition: all 0.5s;
+  height: 100vh;
+  transition: ease-in 1.0s;
+  transition: ease-out 1.0s;
   top: 60px;
-  gap: 0;
-  margin-left: -120px;
+  margin-left: 1000;
 
 
  
@@ -55,6 +53,7 @@ main {
   display: flex;
   font-size: 25px;
   margin-left: 50px;
+  gap: 32px;
 }
 .link {
   display: flex;
@@ -62,6 +61,7 @@ main {
   padding: 10px 15px;
   gap: 25px;
   transition: all 0.5s;
+  margin-top: 50px;
 }
 .link-hover {
   background: lightskyblue;
@@ -75,9 +75,4 @@ main {
 .icon,
 .link_text {
   font-size: 20px;
-}
-@media(max-width: 1200px){
-  .navbar{
-      margin-left: -80px;
-  }
 }

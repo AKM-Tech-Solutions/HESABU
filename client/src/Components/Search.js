@@ -1,10 +1,10 @@
 import React from "react";
 import "./search.css";
-import "bootstrap-icons/font/bootstrap-icons.css";
-import "remixicon/fonts/remixicon.css";
+//import "bootstrap-icons/font/bootstrap-icons.css";
+//import "remixicon/fonts/remixicon.css";
 
-import "bootstrap/dist/css/bootstrap.css";
-import "bootstrap/dist/js/bootstrap.js";
+//import "bootstrap/dist/css/bootstrap.css";
+//import "bootstrap/dist/js/bootstrap.js";
 
 function Search() {
   return (

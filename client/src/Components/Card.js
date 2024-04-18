@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import CardFilter from "./CardFilter";
+import "./card.css";
 
 function Card({ card }) {
   const [filter, setFilter] = useState("Today");
@@ -11,7 +12,7 @@ function Card({ card }) {
     <div className="col-xxl-4 col-md-6">
       <div className="card info-card sales-card">
         <CardFilter filterChange={handleFilterChange} />
-        <div className="cardbody">
+        <div className="card-body">
           <h5 className="card-title">
             {card.name} <span>| {filter}</span>
           </h5>
@@ -22,8 +23,8 @@ function Card({ card }) {
             <div className="ps-3">
               <h6>
                 {card.name === "Revenue"
-                  ? "$" + card.amount.toLocalString("en-US")
-                  : card.amount.toLocalString("en-Us")}
+                  ? "$" + card.amount.toLocaleString("en-US")
+                  : card.amount.toLocaleString("en-Us")}
               </h6>
               <span
                 className={`${

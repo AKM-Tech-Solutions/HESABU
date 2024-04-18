@@ -7,6 +7,7 @@ import Reports from "./Pages/Reports";
 import Transactions from "./Pages/Transactions";
 import Profile from "./Pages/Profile";
 import Header from "./Components/Header";
+import "./App.css";
 
 function App() {
   return (
