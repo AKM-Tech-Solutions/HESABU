@@ -8,17 +8,23 @@ const userSchema = new mongoose.Schema({
     required: true,
     message: "Please add your name", // Custom error messsage instead of putting in array in required
   },
-
   email: {
     type: String,
     required: true,
-    unique: true, // Ensure email is unique
-    trim: true,
-    match: [
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-      "Email is not a valid email address",
-    ],
+    max: 50,
+    unique: false,
   },
+
+  // email: {
+  //   type: String,
+  //   required: true,
+  //   unique: true, // Ensure email is unique
+  //   trim: true,
+  //   match: [
+  //     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+  //     "Email is not a valid email address",
+  //   ],
+  // },
 
   password: {
     type: String,
