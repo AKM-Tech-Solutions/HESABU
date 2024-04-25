@@ -52,7 +52,7 @@ function Sidebar(props) {
         h="100vh"
         m={sidebarMargins}
         minH="100%"
-        overflowX="hidden"
+        overflowX="3den"
         boxShadow={shadow}
       >
         <Scrollbars

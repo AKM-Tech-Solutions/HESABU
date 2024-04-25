@@ -8,13 +8,19 @@ import {
   MdAdminPanelSettings,
   MdOutlineShoppingCart,
 } from "react-icons/md";
+import { GrTransaction } from "react-icons/gr";
+
+import { FaTruckLoading } from "react-icons/fa";
+
+import { IoCalendarNumber } from "react-icons/io5";
 
 // Admin Imports
 import MainDashboard from "views/admin/default";
-import NFTMarketplace from "views/admin/marketplace";
 import Profile from "views/admin/profile";
 import DataTables from "views/admin/dataTables";
 import RTL from "views/admin/rtl";
+import Inventory from "views/admin/marketplace";
+import MiniCalendar from "components/calendar/MiniCalendar";
 
 const routes = [
   {
@@ -36,7 +42,7 @@ const routes = [
         color="inherit"
       />
     ),
-    component: NFTMarketplace,
+    component: Inventory,
     secondary: true,
   },
   {
@@ -47,11 +53,38 @@ const routes = [
     component: DataTables,
   },
   {
+    name: "Transactions",
+    layout: "/admin",
+    path: "/profile",
+    icon: (
+      <Icon as={GrTransaction} width="30px" height="30px" color="inherit" />
+    ),
+    component: Profile,
+  },
+  {
+    name: "Suppliers",
+    layout: "/admin",
+    path: "/profile",
+    icon: (
+      <Icon as={FaTruckLoading} width="30px" height="30px" color="inherit" />
+    ),
+    component: Profile,
+  },
+  {
     name: "Profile",
     layout: "/admin",
     path: "/profile",
     icon: <Icon as={MdPerson} width="30px" height="30px" color="inherit" />,
     component: Profile,
+  },
+  {
+    name: "Calendar",
+    layout: "/admin",
+    path: "/minicalendar",
+    icon: (
+      <Icon as={IoCalendarNumber} width="30px" height="30px" color="inherit" />
+    ),
+    component: MiniCalendar,
   },
 
   {
