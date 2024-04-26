@@ -21,6 +21,8 @@ import DataTables from "views/admin/dataTables";
 import RTL from "views/admin/rtl";
 import Inventory from "views/admin/marketplace";
 import MiniCalendar from "components/calendar/MiniCalendar";
+import Transactions from "components/Transactions/Transactions";
+import Suppliers from "components/Suppliers/Suppliers";
 
 const routes = [
   {
@@ -55,20 +57,20 @@ const routes = [
   {
     name: "Transactions",
     layout: "/admin",
-    path: "/profile",
+    path: "/transactions",
     icon: (
       <Icon as={GrTransaction} width="30px" height="30px" color="inherit" />
     ),
-    component: Profile,
+    component: Transactions,
   },
   {
     name: "Suppliers",
     layout: "/admin",
-    path: "/profile",
+    path: "/suppliers",
     icon: (
       <Icon as={FaTruckLoading} width="30px" height="30px" color="inherit" />
     ),
-    component: Profile,
+    component: Suppliers,
   },
   {
     name: "Profile",
