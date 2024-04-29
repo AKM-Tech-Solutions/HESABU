@@ -1,14 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Heading,
   VStack,
-  Grid,
-  theme,
   Input,
   Button,
   IconButton,
-  HStack,
   useDisclosure,
   Modal,
   ModalOverlay,
@@ -21,15 +18,31 @@ import {
   FormErrorMessage,
   useToast,
   ModalFooter,
+  Grid,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
 } from "@chakra-ui/react";
 import { RiDeleteBin6Line } from "react-icons/ri";
-
-import Header from "components/Header/Header";
 
 const Suppliers = () => {
   const [suppliers, setSuppliers] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
+
+  useEffect(() => {
+    const storedSuppliers = localStorage.getItem("suppliers");
+    if (storedSuppliers) {
+      setSuppliers(JSON.parse(storedSuppliers)); // Parse from JSON
+    }
+  }, []);
+  //added to save the data locally
+  const handleSaveSuppliers = () => {
+    localStorage.setItem("suppliers", JSON.stringify(suppliers));
+  };
 
   const handleAddSupplier = (name, phone, item) => {
     // Basic validation for name and phone number (can be extended)
@@ -69,19 +82,33 @@ const Suppliers = () => {
         </Box>
 
         <VStack spacing={4} mt={4}>
-          {suppliers.map((supplier, index) => (
-            <Grid key={index} templateColumns="repeat(3, 1fr)" gap={4}>
-              <Box>{supplier.name}</Box>
-
-              <Box gap={6}>{supplier.phone}</Box>
-              <Box>{supplier.item}</Box>
-              <IconButton
-                icon={<RiDeleteBin6Line />}
-                variant="ghost"
-                onClick={() => handleRemoveSupplier(index)}
-              />
-            </Grid>
-          ))}
+          <Table variant="simple">
+            <Thead>
+              <Tr>
+                <Th>Name</Th>
+                <Th>Phone Number</Th>
+                <Th>Item Supplied</Th>
+                <Th isNumeric></Th> {/* for the button */}
+              </Tr>
+            </Thead>
+            <Tbody>
+              {suppliers.map((supplier, index) => (
+                <Tr key={index}>
+                  <Td>{supplier.name}</Td>
+                  <Td>{supplier.phone}</Td>
+                  <Td>{supplier.item}</Td>
+                  <Td isNumeric>
+                    <IconButton
+                      icon={<RiDeleteBin6Line />}
+                      variant="ghost"
+                      aria-label="Delete Supplier"
+                      onClick={() => handleRemoveSupplier(index)}
+                    />
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
         </VStack>
 
         <Modal isOpen={isOpen} onClose={onClose}>
@@ -112,15 +139,27 @@ const Suppliers = () => {
               <Button variant="ghost" mr={3} onClick={onClose}>
                 Cancel
               </Button>
+
               <Button
                 colorScheme="blue"
-                onClick={() =>
-                  handleAddSupplier(
-                    document.getElementById("name").value,
-                    document.getElementById("phone").value,
-                    document.getElementById("item").value
-                  )
-                }
+                onClick={() => {
+                  const name = document.getElementById("name").value;
+                  const phone = document.getElementById("phone").value;
+                  const item = document.getElementById("item").value;
+
+                  const addedSupplier = handleAddSupplier(name, phone, item);
+                  if (addedSupplier) {
+                    handleSaveSuppliers();
+                    onClose();
+                    toast({
+                      title: "Success",
+                      description: "Supplier added successfully!",
+                      status: "success",
+                      duration: 3000,
+                      isClosable: true,
+                    });
+                  }
+                }}
               >
                 Add Supplier
               </Button>
