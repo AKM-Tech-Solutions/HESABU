@@ -2,22 +2,20 @@ import React from "react";
 
 import { Icon } from "@chakra-ui/react";
 import {
-  MdBarChart,
   MdPerson,
   MdHome,
   MdAdminPanelSettings,
   MdOutlineShoppingCart,
 } from "react-icons/md";
+//icons
 import { GrTransaction } from "react-icons/gr";
-
 import { FaTruckLoading } from "react-icons/fa";
-
+import { TbReportSearch } from "react-icons/tb";
 import { IoCalendarNumber } from "react-icons/io5";
 
 // Admin Imports
 import MainDashboard from "views/admin/default";
 import Profile from "views/admin/profile";
-import DataTables from "views/admin/dataTables";
 import RTL from "views/admin/rtl";
 import Inventory from "views/admin/marketplace";
 import MiniCalendar from "components/calendar/MiniCalendar";
@@ -47,13 +45,7 @@ const routes = [
     component: Inventory,
     secondary: true,
   },
-  {
-    name: "Data Tables",
-    layout: "/admin",
-    icon: <Icon as={MdBarChart} width="30px" height="30px" color="inherit" />,
-    path: "/data-tables",
-    component: DataTables,
-  },
+
   {
     name: "Transactions",
     layout: "/admin",
@@ -71,6 +63,15 @@ const routes = [
       <Icon as={FaTruckLoading} width="30px" height="30px" color="inherit" />
     ),
     component: Suppliers,
+  },
+  {
+    name: "Reports",
+    layout: "/admin",
+    path: "/reports",
+    icon: (
+      <Icon as={TbReportSearch} width="30px" height="30px" color="inherit" />
+    ),
+    component: Profile,
   },
   {
     name: "Profile",

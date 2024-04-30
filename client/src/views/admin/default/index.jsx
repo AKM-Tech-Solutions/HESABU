@@ -16,16 +16,15 @@ import Header from "components/Header/Header";
 import Loader from "components/loader/Loader";
 
 export default function UserReports() {
-  //Loader
-  const [loading, setLoading] = useState(false);
+  // //Loader
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const loadingTimer = setTimeout(() => {
-      console.log("Setting loading to false"); // Log state change
-
-      setLoading(false); // Set loading to false after 3 seconds
-    }, 30000); // Timeout duration in milliseconds
-
-    return () => clearTimeout(loadingTimer); // Cleanup function to clear timeout
+      console.log("Setting loading to false");
+      setLoading(false);
+    }, 2500);
+    return () => clearTimeout(loadingTimer); // Cleanup function
   }, []);
   // Chakra Color Mode
   const brandColor = useColorModeValue("brand.500", "white");
@@ -34,7 +33,15 @@ export default function UserReports() {
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
       {loading ? (
-        <Loader />
+        <Box
+          flex={1}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          paddingTop="80px"
+        >
+          <Loader />
+        </Box>
       ) : (
         <>
           <Box

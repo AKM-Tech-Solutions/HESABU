@@ -19,6 +19,7 @@ import {
   VStack,
   useToast,
 } from "@chakra-ui/react";
+import "./index.css";
 import Card from "components/card/Card.js";
 import HistoryItem from "views/admin/marketplace/components/HistoryItem";
 
@@ -57,7 +58,6 @@ const Inventory = () => {
     name: "",
     price: "",
     qty: "",
-    sum: "",
     total: "",
   });
 
@@ -93,7 +93,16 @@ const Inventory = () => {
   const textColor = useColorModeValue("secondaryGray.900", "white");
 
   return (
-    <Box pt={{ base: "180px", md: "80px", xl: "80px" }}>
+    <Box
+      pt={
+        window.innerWidth < 768
+          ? "base-180"
+          : window.innerWidth < 1200
+          ? "base-80"
+          : "base-xl"
+      }
+    >
+      {" "}
       <Box
         justifyContent="space-between"
         display="flex"
@@ -103,7 +112,6 @@ const Inventory = () => {
         <SearchBar />
         <Button onClick={onOpen}>Add Product</Button>
       </Box>
-
       <Card p="10px" marginTop="10px">
         <Flex
           align={{ sm: "flex-start", lg: "center" }}
@@ -119,6 +127,7 @@ const Inventory = () => {
         </Flex>
 
         {/* Map through the inventory data to display history items */}
+
         {inventory.map((item, index) => (
           <HistoryItem
             key={index}
@@ -127,11 +136,10 @@ const Inventory = () => {
             image={item.image}
             price={item.price}
             qty={item.qty}
-            total={item.sum}
+            total={item.total}
           />
         ))}
       </Card>
-
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
