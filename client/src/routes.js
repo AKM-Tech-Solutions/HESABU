@@ -21,6 +21,7 @@ import Inventory from "views/admin/marketplace";
 import MiniCalendar from "components/calendar/MiniCalendar";
 import Transactions from "components/Transactions/Transactions";
 import Suppliers from "components/Suppliers/Suppliers";
+import Reports from "components/Reports";
 
 const routes = [
   {
@@ -71,7 +72,7 @@ const routes = [
     icon: (
       <Icon as={TbReportSearch} width="30px" height="30px" color="inherit" />
     ),
-    component: Profile,
+    component: Reports,
   },
   {
     name: "Profile",

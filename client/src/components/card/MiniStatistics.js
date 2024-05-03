@@ -8,14 +8,11 @@ import {
   useColorModeValue,
   Text,
   Box,
-  Button,
 } from "@chakra-ui/react";
 // Custom components
 import Card from "components/card/Card.js";
 // Custom icons
 import React from "react";
-import Header from "components/Header/Header";
-import { IoMdCloudDownload } from "react-icons/io";
 
 export default function Default(props) {
   const { startContent, endContent, name, growth, value } = props;
