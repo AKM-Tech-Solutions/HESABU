@@ -103,7 +103,7 @@ const Transactions = () => {
                     icon={<AiOutlineCloseCircle />}
                     colorScheme="red"
                     size="sm"
-                    isDisabled={true} // Disable button after cancellation
+                    isDisabled={false} // Disable button after cancellation
                     onClick={() => handleCancelTransaction(transaction.id)}
                   />
                 )}

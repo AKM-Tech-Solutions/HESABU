@@ -3,8 +3,10 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "assets/css/MiniCalendar.css";
 import { Text, Icon, Box } from "@chakra-ui/react";
+
 // Chakra imports
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
+import Header from "components/Header/Header";
 // Custom components
 
 export default function MiniCalendar(props) {
@@ -12,14 +14,22 @@ export default function MiniCalendar(props) {
   const [value, onChange] = useState(new Date());
   return (
     <Box
-      align="center"
-      direction="column"
-      w="100%"
-      maxW="max-content"
-      p="20px 15px"
-      h="max-content"
-      {...rest}
+      pt={
+        window.innerWidth < 768
+          ? "base-180"
+          : window.innerWidth < 1200
+          ? "base-80"
+          : "base-xl"
+      }
     >
+      {" "}
+      <Box
+        justifyContent="space-between"
+        display="flex"
+        pt={{ base: "130px", md: "80px", xl: "80px" }}
+      >
+        <Header title="Calendar" />
+      </Box>
       <Calendar
         onChange={onChange}
         value={value}
