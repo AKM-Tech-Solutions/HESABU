@@ -22,7 +22,7 @@ import React from "react";
 // Assets
 import navImage from "assets/img/layout/Navbar.png";
 import { MdNotificationsNone, MdInfoOutline } from "react-icons/md";
-import { FaEthereum } from "react-icons/fa";
+import { FaDollarSign } from "react-icons/fa";
 import routes from "routes.js";
 import { ThemeEditor } from "./ThemeEditor";
 export default function HeaderLinks(props) {
@@ -75,9 +75,9 @@ export default function HeaderLinks(props) {
           borderRadius="30px"
           me="7px"
         >
-          <Icon color={ethColor} w="9px" h="14px" as={FaEthereum} />
+          <Icon color={ethColor} w="9px" h="14px" as={FaDollarSign} />
         </Flex>
-        <Text
+        {/* <Text
           w="max-content"
           color={ethColor}
           fontSize="sm"
@@ -89,7 +89,7 @@ export default function HeaderLinks(props) {
             {" "}
             ETH
           </Text>
-        </Text>
+        </Text> */}
       </Flex>
       <SidebarResponsive routes={routes} />
       <Menu>

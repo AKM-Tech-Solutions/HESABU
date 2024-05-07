@@ -31,6 +31,7 @@ export default function MiniCalendar(props) {
         <Header title="Calendar" />
       </Box>
       <Calendar
+        height="100vh"
         onChange={onChange}
         value={value}
         selectRange={selectRange}

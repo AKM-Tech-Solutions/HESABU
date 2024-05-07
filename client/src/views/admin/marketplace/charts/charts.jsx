@@ -9,13 +9,6 @@ import {
   Tr,
   Th,
   Td,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalCloseButton,
-  ModalBody,
   Button,
   Input,
   FormControl,
@@ -35,14 +28,14 @@ import {
 import BarChart from "components/charts/BarChart";
 
 // actual data fetching logic
-// function fetchTransactions() {
-//   // Simulated some example data for display
-//   return [
-//     { id: 1, date: "2024-05-02", category: "Electronics", amount: 100 },
-//     { id: 2, date: "2024-05-01", category: "Clothing", amount: 50 },
-//     { id: 3, date: "2024-04-30", category: "Food", amount: 20 },
-//   ];
-// }
+function fetchTransactions() {
+  // Simulated some example data for display
+  return [
+    { id: 1, date: "2024-05-02", category: "Electronics", amount: 100 },
+    { id: 2, date: "2024-05-01", category: "Clothing", amount: 50 },
+    { id: 3, date: "2024-04-30", category: "Food", amount: 20 },
+  ];
+}
 
 // Helper function to group transactions by category
 function groupTransactions(transactions) {
@@ -61,39 +54,16 @@ const Transactions = () => {
     category: "",
     amount: 0,
   });
-
-  //open and close functions
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const handleOpenModal = () => {
-    onOpen();
-  };
-  const handleCloseModal = () => {
-    onClose();
-  };
+  const handleOpenModal = () => setIsOpen(true);
+  const handleCloseModal = () => setIsOpen(false);
 
-  //local storage
   useEffect(() => {
-    const storedTransactions = localStorage.getItem("transactions");
-    if (storedTransactions) {
-      setTransactions(JSON.parse(storedTransactions));
-    }
+    const fetchedTransactions = fetchTransactions();
+    setTransactions(fetchedTransactions);
+    setCategoriesData(groupTransactions(fetchedTransactions));
   }, []);
-
-  // Save data to localStorage whenever suppliers change
-  useEffect(() => {
-    localStorage.setItem("transactions", JSON.stringify(transactions));
-  }, [transactions]); //  only runs when suppliers change
-
-  const handleSaveTransactions = () => {
-    localStorage.setItem("transactions", JSON.stringify(transactions));
-  };
-
-  // useEffect(() => {
-  //   const fetchedTransactions = fetchTransactions();
-  //   setTransactions(fetchedTransactions);
-  //   setCategoriesData(groupTransactions(fetchedTransactions));
-  // }, []);
 
   const handleCancelTransaction = (transactionId) => {
     // Implement logic to cancel transaction with id (update data)
@@ -114,7 +84,6 @@ const Transactions = () => {
 
   const handleAddTransaction = (event) => {
     event.preventDefault();
-    handleSaveTransactions();
     // Implement logic to add new transaction (update data)
     console.log("Adding new transaction:", newTransaction);
     setTransactions([...transactions, { ...newTransaction, id: Date.now() }]); // Generate temporary id
@@ -138,7 +107,7 @@ const Transactions = () => {
       >
         <Heading>Transactions</Heading>
         <HStack spacing={2}>
-          <Button onClick={handleOpenModal}>Add Transaction</Button>
+          <Button onClick={onOpen}>Add Transaction</Button>
           <IconButton icon={<AiOutlineUpload />} onClick={onOpen} />
         </HStack>
       </Box>
