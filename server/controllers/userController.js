@@ -245,7 +245,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
   await new Token({
     userId: user._id,
     token: hashedToken,
-    createdAt: Date.noew(),
+    createdAt: Date.now(),
     expiresAt: Date.now() + 30 * (60 * 1000), //thirty minutes
   }).save();
 

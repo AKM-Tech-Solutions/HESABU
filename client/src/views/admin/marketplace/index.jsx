@@ -9,6 +9,7 @@ import {
   Button,
   useColorModeValue,
   Input,
+  IconButton,
   FormControl,
   FormLabel,
   Modal,
@@ -31,6 +32,7 @@ import {
 } from "@chakra-ui/react";
 import "./index.css";
 import Card from "components/card/Card.js";
+import { AiOutlineCloseCircle } from "react-icons/ai";
 
 import Header from "components/Header/Header";
 import SearchBar from "components/Search";
@@ -148,6 +150,18 @@ const Inventory = () => {
     ],
   };
 
+  //cancel button
+  const handleCancelInventory = (inventorId) => {
+    console.log(`Cancelling transaction ${inventorId}`);
+    const inventoryIndex = inventory.findIndex(
+      (inventor) => inventor.id === inventorId
+    );
+    if (inventoryIndex !== -1) {
+      inventory.splice(inventoryIndex, 1); // removes one items at a time
+      setInventory([...inventory]);
+    }
+  };
+
   const InventoryCharts = ({ chartData }) => {
     return (
       <Card>
@@ -191,13 +205,23 @@ const Inventory = () => {
               </Tr>
             </Thead>
             <Tbody>
-              {inventory.map((item, index) => (
-                <Tr key={index}>
-                  <Td>{item.date}</Td>
-                  <Td>{item.name}</Td>
-                  <Td>{item.price}</Td>
-                  <Td>{item.qty}</Td>
-                  <Td>{item.total}</Td>
+              {inventory.map((inventor) => (
+                <Tr key={inventor.id}>
+                  <Td>{inventor.date}</Td>
+                  <Td>{inventor.name}</Td>
+                  <Td>Ksh.{inventor.price}</Td>
+                  <Td>{inventor.qty}</Td>
+                  <Td>Ksh.{inventor.total}</Td>
+                  <Td isNumeric>
+                    <IconButton
+                      variant="ghost"
+                      colorScheme="red"
+                      size="sm"
+                      aria-label="Cancel transaction"
+                      icon={<AiOutlineCloseCircle />}
+                      onClick={() => handleCancelInventory(inventor.id)}
+                    />
+                  </Td>
                 </Tr>
               ))}
             </Tbody>

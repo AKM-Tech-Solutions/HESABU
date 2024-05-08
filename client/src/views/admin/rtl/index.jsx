@@ -25,35 +25,33 @@ import {
 import CheckTable from "views/admin/default/components/CheckTable";
 import DailyTraffic from "views/admin/default/components/DailyTraffic";
 import PieCard from "views/admin/default/components/PieCard";
-//import TotalSpent from "views/admin/default/components/TotalSpent";
+import TotalSpent from "views/admin/default/components/TotalSpent";
 import WeeklyRevenue from "views/admin/default/components/WeeklyRevenue";
 import { columnsDataCheck } from "views/admin/default/variables/columnsData";
 import tableDataCheck from "views/admin/default/variables/tableDataCheck.json";
-import InventoryChart from "../marketplace/charts/charts";
-import InventoryCharts from "../marketplace/index";
 
 export default function UserReports() {
   //for the inventory graph
-  const [inventoryChartData, setInventoryChartData] = React.useState([]);
+  // const [inventoryChartData, setInventoryChartData] = React.useState([]);
 
-  const fetchInventoryData = async () => {
-    try {
-      const response = await fetch("your-api-endpoint"); // Replace with your API URL
-      const data = await response.json();
-      setInventoryChartData(data); // Update state with fetched data
-    } catch (error) {
-      console.error("Error fetching inventory data:", error);
-      // Handle errors appropriately (e.g., display an error message to the user)
-    }
-  };
+  // const fetchInventoryData = async () => {
+  //   try {
+  //     const response = await fetch("your-api-endpoint"); // Replace with your API URL
+  //     const data = await response.json();
+  //     setInventoryChartData(data); // Update state with fetched data
+  //   } catch (error) {
+  //     console.error("Error fetching inventory data:", error);
+  //     // Handle errors appropriately (e.g., display an error message to the user)
+  //   }
+  // };
   // Chakra Color Mode
   const brandColor = useColorModeValue("brand.500", "white");
   const boxBg = useColorModeValue("secondaryGray.300", "whiteAlpha.100");
 
   //fetch data component mount
-  React.useEffect(() => {
-    fetchInventoryData();
-  }, []);
+  // React.useEffect(() => {
+  //   fetchInventoryData();
+  // }, []);
 
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
@@ -142,9 +140,7 @@ export default function UserReports() {
       </SimpleGrid>
 
       <SimpleGrid columns={{ base: 1, md: 2, xl: 2 }} gap="20px" mb="20px">
-        {/* <TotalSpent /> */}
-        <InventoryCharts chartData={inventoryChartData} />
-        <InventoryChart />
+        <TotalSpent />
         <WeeklyRevenue />
       </SimpleGrid>
       <SimpleGrid columns={{ base: 1, md: 1, xl: 2 }} gap="20px" mb="20px">

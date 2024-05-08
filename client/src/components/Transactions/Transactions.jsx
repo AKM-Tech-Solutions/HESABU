@@ -34,16 +34,6 @@ import {
 } from "react-icons/ai";
 import BarChart from "components/charts/BarChart";
 
-// actual data fetching logic
-// function fetchTransactions() {
-//   // Simulated some example data for display
-//   return [
-//     { id: 1, date: "2024-05-02", category: "Electronics", amount: 100 },
-//     { id: 2, date: "2024-05-01", category: "Clothing", amount: 50 },
-//     { id: 3, date: "2024-04-30", category: "Food", amount: 20 },
-//   ];
-// }
-
 // Helper function to group transactions by category
 function groupTransactions(transactions) {
   return transactions.reduce((acc, transaction) => {
@@ -88,12 +78,6 @@ const Transactions = () => {
   const handleSaveTransactions = () => {
     localStorage.setItem("transactions", JSON.stringify(transactions));
   };
-
-  // useEffect(() => {
-  //   const fetchedTransactions = fetchTransactions();
-  //   setTransactions(fetchedTransactions);
-  //   setCategoriesData(groupTransactions(fetchedTransactions));
-  // }, []);
 
   const handleCancelTransaction = (transactionId) => {
     // Implement logic to cancel transaction with id (update data)
@@ -157,7 +141,7 @@ const Transactions = () => {
             <Tr key={transaction.id}>
               <Td>{transaction.date}</Td>
               <Td>{transaction.category}</Td>
-              <Td>${transaction.amount}</Td>
+              <Td>Ksh.{transaction.amount}</Td>
               <Td isNumeric>
                 <IconButton
                   variant="ghost"
@@ -219,10 +203,10 @@ const Transactions = () => {
       <Button onClick={handleOpenModal}>Add Transaction</Button>
 
       {/* Bulk Upload */}
-      <FormControl mt={4}>
+      {/* <FormControl mt={4}>
         <FormLabel>Bulk Upload Transactions (CSV)</FormLabel>
         <Input type="file" onChange={handleBulkUpload} />
-      </FormControl>
+      </FormControl> */}
 
       {/* Summary */}
       <Box mt={8}>
