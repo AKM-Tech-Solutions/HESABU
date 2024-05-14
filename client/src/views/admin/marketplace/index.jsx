@@ -157,7 +157,7 @@ const Inventory = () => {
       (inventor) => inventor.id === inventorId
     );
     if (inventoryIndex !== -1) {
-      inventory.splice(inventoryIndex, 1); // removes one items at a time
+      inventory.splice(inventoryIndex, 1); // removes one item at a time
       setInventory([...inventory]);
     }
   };

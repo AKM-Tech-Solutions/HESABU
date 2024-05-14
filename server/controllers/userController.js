@@ -72,7 +72,7 @@ const registerUser = asyncHandler(async (req, res) => {
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  //validation of request
+  //validation of request db
   if (!email || !password) {
     res.status(400);
     throw new Error("Please add email and password");
