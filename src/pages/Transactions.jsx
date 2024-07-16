@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   GridComponent,
   ColumnsDirective,
@@ -8,21 +8,28 @@ import {
   Page,
   Toolbar,
 } from "@syncfusion/ej2-react-grids";
+import {
+  LineSeries,
+  Inject as ChartInject,
+  Tooltip,
+  Legend,
+  Category,
+  ChartComponent,
+  SeriesCollectionDirective,
+  SeriesDirective,
+  DataLabel,
+} from "@syncfusion/ej2-react-charts";
 import Header from "../components/Header";
-import "../pages/cssFiles/Inventory.css";
-import { productsGrid } from "../data/mockData/gridOutlook";
+import { transactionsGrid } from "../data/mockData/gridOutlook";
+import Loaders from "../components/Loaders/Loaders";
 
-const Inventory = () => {
+const Transactions = () => {
   const toolbarOptions = ["Search"];
-
-  const [productsData, setProductsData] = useState([]);
-
+  const [transactionsData, setTransactionsData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     date: "",
     name: "",
-    catId: "",
-    defaultPrice: 0,
     quantity: 0,
     total: 0,
   });
@@ -36,64 +43,65 @@ const Inventory = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleAddProduct = () => {
-    const newProduct = {
-      id: productsData.length + 1,
+  const handleAddTransaction = () => {
+    const newTransaction = {
+      id: transactionsData.length + 1,
       ...formData,
-      total: formData.defaultPrice * formData.quantity,
     };
-
-    setProductsData([...productsData, newProduct]);
+    setTransactionsData([...transactionsData, newTransaction]);
 
     // Reset formData state after adding
     setFormData({
       date: "",
       name: "",
-      catId: "",
-      defaultPrice: 0,
       quantity: 0,
+      total: 0,
     });
 
-    // Close modal after adding product
+    // Close modal after adding Transaction
     toggleModal();
   };
 
-  const handleCellRender = (args) => {
-    //color coding if the value of quantity is below 5
-    if (args.column.field === "quantity") {
-      const quantity = args.data[args.column.field];
-      if (quantity && parseInt(quantity) < 5) {
-        args.cell.classList.add("red");
-      } else {
-        args.cell.classList.remove("red");
-      }
-    }
+  // Loader
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Function to fetch data (replace with your actual logic)
+  const fetchData = async () => {
+    setIsLoading(true);
+    // Simulate data fetching
+    const response = await new Promise((resolve) =>
+      setTimeout(() => resolve([]), 3000)
+    );
+    setTransactionsData(response);
+    setIsLoading(false);
   };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
       <div className="flex justify-between items-center mb-4">
-        <Header category="Page" title="Inventory" />
-
-        {/* Add New Product button */}
+        <Header category="Page" title="Transaction" />
         <button
           className="bg-blue-500 text-white py-2 px-4 rounded-lg"
           onClick={toggleModal}
         >
-          Add New Product
+          Add New Transaction
         </button>
       </div>
+
       {/* Grid Component */}
       <GridComponent
-        dataSource={productsData}
+        dataSource={transactionsData}
         allowPaging={true}
         pageSettings={{ pageCount: 5 }}
         editSettings={{ allowDeleting: true, allowEditing: true }}
         toolbar={toolbarOptions}
-        queryCellInfo={handleCellRender}
       >
         <ColumnsDirective>
-          {productsGrid.map((column, index) => (
+          {transactionsGrid.map((column, index) => (
             <ColumnDirective
               key={index}
               field={column.field}
@@ -105,11 +113,22 @@ const Inventory = () => {
         <Inject services={[Search, Page, Toolbar]} />
       </GridComponent>
 
-      {/* Modal for Adding New Product */}
+      {/* Line Chart */}
+      {isLoading ? (
+        <div className="flex justify-center">
+          <Loaders />
+        </div>
+      ) : (
+        <div className="mb-6 mt-6">
+          <LineSeriesChart graphData={transactionsData} />
+        </div>
+      )}
+
+      {/* Modal for Adding New Transaction */}
       {isModalOpen && (
         <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
           <div className="bg-white rounded-lg p-8">
-            <h2 className="text-lg font-semibold mb-4">Add New Product</h2>
+            <h2 className="text-lg font-semibold mb-4">Add New Transaction</h2>
             <div className="mb-4">
               <label className="block text-sm mb-2">Date</label>
               <input
@@ -130,26 +149,7 @@ const Inventory = () => {
                 onChange={handleChange}
               />
             </div>
-            <div className="mb-4">
-              <label className="block text-sm mb-2">Category ID</label>
-              <input
-                type="text"
-                className="w-full border-gray-300 rounded-sm py-2 px-3"
-                name="catId"
-                value={formData.catId}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-sm mb-2">Default Price</label>
-              <input
-                type="number"
-                className="w-full border-gray-300 rounded-sm py-2 px-3"
-                name="defaultPrice"
-                value={formData.defaultPrice}
-                onChange={handleChange}
-              />
-            </div>
+
             <div className="mb-4">
               <label className="block text-sm mb-2">Quantity</label>
               <input
@@ -160,13 +160,23 @@ const Inventory = () => {
                 onChange={handleChange}
               />
             </div>
+            <div className="mb-4">
+              <label className="block text-sm mb-2">Total</label>
+              <input
+                type="number"
+                className="w-full border-gray-300 rounded-sm py-2 px-3"
+                name="total"
+                value={formData.total}
+                onChange={handleChange}
+              />
+            </div>
 
             <div className="flex justify-end">
               <button
                 className="bg-blue-500 text-white py-2 px-4 rounded-lg mr-2"
-                onClick={handleAddProduct}
+                onClick={handleAddTransaction}
               >
-                Add Product
+                Add Transaction
               </button>
               <button
                 className="bg-gray-200 text-gray-800 py-2 px-4 rounded-lg"
@@ -182,4 +192,42 @@ const Inventory = () => {
   );
 };
 
-export default Inventory;
+const LineSeriesChart = ({ graphData }) => {
+  //grouping the transactions by product name
+  const groupedData = graphData.reduce((acc, transaction) => {
+    acc[transaction.name] =
+      (acc[transaction.name] || 0) + parseInt(transaction.total);
+    return acc;
+  }, {});
+
+  // connnvert groupedData to chartData format
+  const chartData = Object.entries(groupedData)
+    .map(([name, total]) => ({ name, total }))
+    .filter((entry) => entry.name && entry.total !== undefined);
+  console.log("Chart Data:", chartData);
+
+  return (
+    <ChartComponent
+      title="Transactions Analysis"
+      primaryXAxis={{ valueType: "Category", title: " Name" }}
+      primaryYAxis={{ tilte: "Total" }}
+      legendSettings={{ visible: true }}
+    >
+      <SeriesCollectionDirective>
+        <SeriesDirective
+          dataSource={
+            chartData.length > 0 ? chartData : [{ name: "No Data", total: 0 }]
+          }
+          xName="name"
+          yName="total"
+          type="Line"
+          name="Product Name"
+          // marker={{ dataLabel: { visible: true }, visible: true }}
+        />
+      </SeriesCollectionDirective>
+      <ChartInject services={[LineSeries, Category, Legend, DataLabel]} />
+    </ChartComponent>
+  );
+};
+
+export default Transactions;

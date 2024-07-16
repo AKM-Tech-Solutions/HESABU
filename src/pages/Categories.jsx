@@ -8,23 +8,18 @@ import {
   Page,
   Toolbar,
 } from "@syncfusion/ej2-react-grids";
-import Header from "../components/Header";
-import "../pages/cssFiles/Inventory.css";
-import { productsGrid } from "../data/mockData/gridOutlook";
+import { Header } from "../components";
+import { categoriesGrid } from "../data/mockData/gridOutlook";
 
-const Inventory = () => {
+const Categories = () => {
   const toolbarOptions = ["Search"];
 
-  const [productsData, setProductsData] = useState([]);
-
+  const [categoryData, setCategoryData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
-    date: "",
+    image: "",
     name: "",
     catId: "",
-    defaultPrice: 0,
-    quantity: 0,
-    total: 0,
   });
 
   const toggleModal = () => {
@@ -36,64 +31,52 @@ const Inventory = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleAddProduct = () => {
-    const newProduct = {
-      id: productsData.length + 1,
-      ...formData,
-      total: formData.defaultPrice * formData.quantity,
-    };
-
-    setProductsData([...productsData, newProduct]);
-
-    // Reset formData state after adding
-    setFormData({
-      date: "",
-      name: "",
-      catId: "",
-      defaultPrice: 0,
-      quantity: 0,
-    });
-
-    // Close modal after adding product
-    toggleModal();
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64Image = btoa(reader.result.split(",")[1]);
+        setFormData({ ...formData, image: base64Image });
+        console.log(formData.image);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
-  const handleCellRender = (args) => {
-    //color coding if the value of quantity is below 5
-    if (args.column.field === "quantity") {
-      const quantity = args.data[args.column.field];
-      if (quantity && parseInt(quantity) < 5) {
-        args.cell.classList.add("red");
-      } else {
-        args.cell.classList.remove("red");
-      }
-    }
+  const handleAddCategory = () => {
+    const newCategory = {
+      id: categoryData.length + 1,
+      ...formData,
+    };
+
+    console.log(newCategory);
+    setCategoryData([...categoryData, newCategory]);
+    setFormData({ image: "", name: "", catId: "" });
+    toggleModal();
   };
 
   return (
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
       <div className="flex justify-between items-center mb-4">
-        <Header category="Page" title="Inventory" />
-
-        {/* Add New Product button */}
+        <Header category="Page" title="Categories" />
         <button
           className="bg-blue-500 text-white py-2 px-4 rounded-lg"
           onClick={toggleModal}
         >
-          Add New Product
+          Add New Category
         </button>
       </div>
-      {/* Grid Component */}
+
       <GridComponent
-        dataSource={productsData}
+        dataSource={categoryData}
         allowPaging={true}
         pageSettings={{ pageCount: 5 }}
         editSettings={{ allowDeleting: true, allowEditing: true }}
         toolbar={toolbarOptions}
-        queryCellInfo={handleCellRender}
       >
         <ColumnsDirective>
-          {productsGrid.map((column, index) => (
+          {categoriesGrid.map((column, index) => (
             <ColumnDirective
               key={index}
               field={column.field}
@@ -105,21 +88,28 @@ const Inventory = () => {
         <Inject services={[Search, Page, Toolbar]} />
       </GridComponent>
 
-      {/* Modal for Adding New Product */}
       {isModalOpen && (
         <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
           <div className="bg-white rounded-lg p-8">
-            <h2 className="text-lg font-semibold mb-4">Add New Product</h2>
+            <h2 className="text-lg font-semibold mb-4">Add New Category</h2>
             <div className="mb-4">
-              <label className="block text-sm mb-2">Date</label>
+              <label className="block text-sm mb-2">Image</label>
               <input
-                type="date"
-                className="w-full border-gray-300 rounded-sm py-2 px-3"
-                name="date"
-                value={formData.date}
-                onChange={handleChange}
+                type="file"
+                accept="image/*"
+                className="w-30 h-30 border-gray-300 rounded-sm py-2 px-3"
+                onChange={handleFileChange}
               />
             </div>
+            {formData.image && (
+              <div className="mb-4">
+                <img
+                  src={formData.image}
+                  alt="Preview"
+                  className="w-20 h-20 rounded-full"
+                />
+              </div>
+            )}
             <div className="mb-4">
               <label className="block text-sm mb-2">Name</label>
               <input
@@ -130,6 +120,7 @@ const Inventory = () => {
                 onChange={handleChange}
               />
             </div>
+
             <div className="mb-4">
               <label className="block text-sm mb-2">Category ID</label>
               <input
@@ -140,33 +131,13 @@ const Inventory = () => {
                 onChange={handleChange}
               />
             </div>
-            <div className="mb-4">
-              <label className="block text-sm mb-2">Default Price</label>
-              <input
-                type="number"
-                className="w-full border-gray-300 rounded-sm py-2 px-3"
-                name="defaultPrice"
-                value={formData.defaultPrice}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-sm mb-2">Quantity</label>
-              <input
-                type="number"
-                className="w-full border-gray-300 rounded-sm py-2 px-3"
-                name="quantity"
-                value={formData.quantity}
-                onChange={handleChange}
-              />
-            </div>
 
             <div className="flex justify-end">
               <button
                 className="bg-blue-500 text-white py-2 px-4 rounded-lg mr-2"
-                onClick={handleAddProduct}
+                onClick={handleAddCategory}
               >
-                Add Product
+                Add Category
               </button>
               <button
                 className="bg-gray-200 text-gray-800 py-2 px-4 rounded-lg"
@@ -182,4 +153,4 @@ const Inventory = () => {
   );
 };
 
-export default Inventory;
+export default Categories;
