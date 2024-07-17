@@ -11,9 +11,15 @@ import {
 import Header from "../components/Header";
 import "../pages/cssFiles/Inventory.css";
 import { productsGrid } from "../data/mockData/gridOutlook";
+import "@syncfusion/ej2-base/styles/material.css";
+import "@syncfusion/ej2-buttons/styles/material.css";
+import "@syncfusion/ej2-dropdowns/styles/material.css";
+import "@syncfusion/ej2-inputs/styles/material.css";
+import "@syncfusion/ej2-popups/styles/material.css";
+import "@syncfusion/ej2-react-grids/styles/material.css";
 
 const Inventory = () => {
-  const toolbarOptions = ["Search"];
+  const toolbarOptions = ["Search..."];
 
   const [productsData, setProductsData] = useState([]);
 
@@ -33,17 +39,38 @@ const Inventory = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData({
+      ...formData,
+      [name]: name === "quantity" ? parseInt(value, 10) || 0 : value, // always make sure the quantity is number
+    });
   };
 
   const handleAddProduct = () => {
-    const newProduct = {
-      id: productsData.length + 1,
-      ...formData,
-      total: formData.defaultPrice * formData.quantity,
-    };
+    const newProductTotal = formData.defaultPrice * formData.quantity;
+    const existingProductIndex = productsData.findIndex(
+      (product) =>
+        product.name === formData.name && product.catId === formData.catId
+    );
 
-    setProductsData([...productsData, newProduct]);
+    if (existingProductIndex !== -1) {
+      // Update existing product
+      const updatedProduct = { ...productsData[existingProductIndex] };
+      updatedProduct.quantity += parseInt(formData.quantity, 10);
+      updatedProduct.total += newProductTotal;
+      const updatedProductsData = [...productsData];
+      updatedProductsData[existingProductIndex] = updatedProduct;
+
+      setProductsData(updatedProductsData);
+    } else {
+      // Add as new product
+      const newProduct = {
+        id: productsData.length + 1,
+        ...formData,
+        total: newProductTotal,
+      };
+
+      setProductsData([...productsData, newProduct]);
+    }
 
     // Reset formData state after adding
     setFormData({
@@ -58,11 +85,11 @@ const Inventory = () => {
     toggleModal();
   };
 
+  //correct
   const handleCellRender = (args) => {
-    //color coding if the value of quantity is below 5
     if (args.column.field === "quantity") {
       const quantity = args.data[args.column.field];
-      if (quantity && parseInt(quantity) < 5) {
+      if (quantity && parseInt(quantity) < 25) {
         args.cell.classList.add("red");
       } else {
         args.cell.classList.remove("red");

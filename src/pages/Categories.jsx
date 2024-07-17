@@ -34,11 +34,15 @@ const Categories = () => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      const validTypes = ["image/jpeg", "image/png", "image/gif", "image/jpg"];
+      if (!validTypes.includes(file.type)) {
+        alert("Please upload a valid image file (jpeg, png, gif).");
+        return;
+      }
       const reader = new FileReader();
       reader.onloadend = () => {
-        const base64Image = btoa(reader.result.split(",")[1]);
-        setFormData({ ...formData, image: base64Image });
-        console.log(formData.image);
+        setFormData({ ...formData, image: reader.result });
+        console.log(reader.result);
       };
       reader.readAsDataURL(file);
     }
@@ -100,16 +104,16 @@ const Categories = () => {
                 className="w-30 h-30 border-gray-300 rounded-sm py-2 px-3"
                 onChange={handleFileChange}
               />
+              {formData.image && (
+                <div className="mb-4">
+                  <img
+                    src={formData.image}
+                    alt="Preview"
+                    className="w-20 h-20 rounded-full"
+                  />
+                </div>
+              )}
             </div>
-            {formData.image && (
-              <div className="mb-4">
-                <img
-                  src={formData.image}
-                  alt="Preview"
-                  className="w-20 h-20 rounded-full"
-                />
-              </div>
-            )}
             <div className="mb-4">
               <label className="block text-sm mb-2">Name</label>
               <input

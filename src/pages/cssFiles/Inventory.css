@@ -1,3 +1,7 @@
 .red {
-  color: rgb(252, 144, 144);
+  background-color: rgb(255, 125, 125) !important;
+  color: rgb(0, 0, 0);
+}
+.nav-button {
+  transition: transform 3s ease-in-out;
 }

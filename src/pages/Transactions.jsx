@@ -11,7 +11,6 @@ import {
 import {
   LineSeries,
   Inject as ChartInject,
-  Tooltip,
   Legend,
   Category,
   ChartComponent,
@@ -193,37 +192,51 @@ const Transactions = () => {
 };
 
 const LineSeriesChart = ({ graphData }) => {
-  //grouping the transactions by product name
+  // Grouping the transactions by product name and date
   const groupedData = graphData.reduce((acc, transaction) => {
-    acc[transaction.name] =
-      (acc[transaction.name] || 0) + parseInt(transaction.total);
+    const date = transaction.date;
+    const name = transaction.name;
+    const total = parseInt(transaction.total);
+
+    if (!acc[name]) {
+      acc[name] = [];
+    }
+
+    // push the data point into the corresponding product array
+    acc[name].push({ date, total });
     return acc;
   }, {});
 
-  // connnvert groupedData to chartData format
-  const chartData = Object.entries(groupedData)
-    .map(([name, total]) => ({ name, total }))
-    .filter((entry) => entry.name && entry.total !== undefined);
-  console.log("Chart Data:", chartData);
+  //  generate a random color
+  function getRandomColor() {
+    return `#${Math.floor(Math.random() * 16777215)
+      .toString(16)
+      .padStart(6, "0")}`;
+  }
 
   return (
     <ChartComponent
       title="Transactions Analysis"
-      primaryXAxis={{ valueType: "Category", title: " Name" }}
-      primaryYAxis={{ tilte: "Total" }}
+      primaryXAxis={{ valueType: "Category", title: "Date" }}
+      primaryYAxis={{ title: "Total" }}
       legendSettings={{ visible: true }}
     >
       <SeriesCollectionDirective>
-        <SeriesDirective
-          dataSource={
-            chartData.length > 0 ? chartData : [{ name: "No Data", total: 0 }]
-          }
-          xName="name"
-          yName="total"
-          type="Line"
-          name="Product Name"
-          // marker={{ dataLabel: { visible: true }, visible: true }}
-        />
+        {Object.entries(groupedData).map(([name, data], index) => {
+          const color = getRandomColor();
+          return (
+            <SeriesDirective
+              key={index}
+              dataSource={data}
+              xName="date"
+              yName="total"
+              type="Line"
+              name={name}
+              marker={{ visible: true }}
+              fill={color}
+            />
+          );
+        })}
       </SeriesCollectionDirective>
       <ChartInject services={[LineSeries, Category, Legend, DataLabel]} />
     </ChartComponent>

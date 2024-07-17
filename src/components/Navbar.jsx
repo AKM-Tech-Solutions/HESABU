@@ -5,6 +5,7 @@ import { BsChatLeft } from "react-icons/bs";
 import { RiNotification3Line } from "react-icons/ri";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
+import "../pages/cssFiles/Inventory.css";
 
 import avatar from "../data/avatar.jpg";
 import { Cart, Chat, Notification, UserProfile } from ".";
@@ -66,6 +67,7 @@ const Navbar = () => {
         customFunc={handleActiveMenu}
         color={currentColor}
         icon={<AiOutlineMenu />}
+        className="nav-button"
       />
       <div className="flex">
         <NavButton

@@ -1,22 +1,10 @@
-// export const gridCategoryImage = (props) => (
-//   <div>
-//     <img
-//       className="rounded-xl h-20 md:ml-3"
-//       alt="Category"
-//       src={
-//         props.image.startsWith("data:image/")
-//           ? props.image
-//           : `data:image/png;base64,${props.image}`
-//       }
-//     />
-//   </div>
-// );
+//2
 const gridCategoryImage = (props) => (
   <div>
     <img
       className="rounded-xl h-20 md:ml-3"
       alt="Category"
-      src={props.image}
+      {...props.image}
       onError={(e) => {
         e.target.src = "../../../public/favicon.ico";
       }}
@@ -95,12 +83,14 @@ export const categoriesGrid = [
     headerText: "Category Image",
     template: gridCategoryImage,
     width: "120",
+    height: "135",
     textAlign: "Center",
   },
   {
     field: "name",
     headerText: "Category Name",
     width: "135",
+    height: "135",
 
     textAlign: "Center",
   },
@@ -108,6 +98,7 @@ export const categoriesGrid = [
     field: "catId",
     headerText: "Category ID",
     width: "120",
+    height: "135",
 
     textAlign: "Center",
   },
