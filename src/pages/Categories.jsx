@@ -60,6 +60,20 @@ const Categories = () => {
     toggleModal();
   };
 
+  const imageTemplate = (props) => {
+    if (props.image) {
+      return (
+        <div
+          dangerouslySetInnerHTML={{
+            __html: `<img src="${props.image}" alt="${props.name}" style="width:120px; height:135px; border-radius:8px;" />`,
+          }}
+        />
+      );
+    } else {
+      return <span>No Image</span>;
+    }
+  };
+
   return (
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
       <div className="flex justify-between items-center mb-4">
@@ -86,6 +100,8 @@ const Categories = () => {
               field={column.field}
               headerText={column.headerText}
               textAlign={column.textAlign}
+              template={column.field === "image" ? imageTemplate : null}
+              width={column.width}
             />
           ))}
         </ColumnsDirective>
@@ -109,7 +125,11 @@ const Categories = () => {
                   <img
                     src={formData.image}
                     alt="Preview"
-                    className="w-20 h-20 rounded-full"
+                    style={{
+                      width: "80px",
+                      height: "80px",
+                      borderRadius: "8px",
+                    }}
                   />
                 </div>
               )}

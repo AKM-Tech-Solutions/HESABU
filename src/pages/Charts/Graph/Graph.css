@@ -1,0 +1,28 @@
+.Graph {
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  margin: 20px;
+}
+
+.e-chart {
+  max-width: 800px;
+  margin: auto;
+}
+
+/* Light mode styles */
+:root {
+  --graph-background-light: #fff;
+  --graph-color-light: #000;
+}
+
+/* Dark mode styles */
+[data-theme="Dark"] {
+  --graph-background-light: #333;
+  --graph-color-light: #fff;
+}
+
+.Graph {
+  background-color: var(--graph-background-light);
+  color: var(--graph-color-light);
+}
