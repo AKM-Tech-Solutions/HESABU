@@ -1,35 +1,27 @@
 import React from "react";
-import {
-  AiOutlineCalendar,
-  AiOutlineShoppingCart,
-  AiOutlineAreaChart,
-  AiOutlineBarChart,
-  AiOutlineStock,
-} from "react-icons/ai";
+import { AiOutlineCalendar, AiOutlineStock } from "react-icons/ai";
 import {
   FiShoppingBag,
-  FiEdit,
-  FiPieChart,
   FiBarChart,
   FiCreditCard,
   FiStar,
   FiShoppingCart,
 } from "react-icons/fi";
 import {
-  BsKanban,
-  BsBarChart,
   BsBoxSeam,
   BsCurrencyDollar,
   BsShield,
   BsChatLeft,
 } from "react-icons/bs";
-import { BiColorFill } from "react-icons/bi";
-import { IoMdContacts } from "react-icons/io";
-import { RiContactsLine, RiStockLine } from "react-icons/ri";
-import { MdOutlineSupervisorAccount } from "react-icons/md";
+
+import { MdOutlineSupervisorAccount, MdInventory2 } from "react-icons/md";
+import { BiSolidCategory } from "react-icons/bi";
+import { TbReportAnalytics } from "react-icons/tb";
+
+import { GrTransaction } from "react-icons/gr";
+
 import { HiOutlineRefresh } from "react-icons/hi";
 import { TiTick } from "react-icons/ti";
-import { GiLouvrePyramid } from "react-icons/gi";
 import { GrLocation } from "react-icons/gr";
 import avatar from "./avatar.jpg";
 import avatar2 from "./avatar2.jpg";
@@ -510,10 +502,10 @@ export const employeesGrid = [
 
 export const links = [
   {
-    title: "Dashboard",
+    title: "Home",
     links: [
       {
-        name: "ecommerce",
+        name: "dashboard",
         icon: <FiShoppingBag />,
       },
     ],
@@ -523,16 +515,21 @@ export const links = [
     title: "Pages",
     links: [
       {
-        name: "orders",
-        icon: <AiOutlineShoppingCart />,
+        name: "categories",
+        icon: <BiSolidCategory />,
       },
       {
-        name: "employees",
-        icon: <IoMdContacts />,
+        name: "inventory",
+        icon: <MdInventory2 />,
       },
       {
-        name: "customers",
-        icon: <RiContactsLine />,
+        name: "transactions",
+        icon: <GrTransaction />,
+      },
+
+      {
+        name: "reports",
+        icon: <TbReportAnalytics />,
       },
     ],
   },
@@ -543,18 +540,6 @@ export const links = [
         name: "calendar",
         icon: <AiOutlineCalendar />,
       },
-      {
-        name: "kanban",
-        icon: <BsKanban />,
-      },
-      {
-        name: "editor",
-        icon: <FiEdit />,
-      },
-      {
-        name: "color-picker",
-        icon: <BiColorFill />,
-      },
     ],
   },
   {
@@ -563,35 +548,6 @@ export const links = [
       {
         name: "line",
         icon: <AiOutlineStock />,
-      },
-      {
-        name: "area",
-        icon: <AiOutlineAreaChart />,
-      },
-
-      {
-        name: "bar",
-        icon: <AiOutlineBarChart />,
-      },
-      {
-        name: "pie",
-        icon: <FiPieChart />,
-      },
-      {
-        name: "financial",
-        icon: <RiStockLine />,
-      },
-      {
-        name: "color-mapping",
-        icon: <BsBarChart />,
-      },
-      {
-        name: "pyramid",
-        icon: <GiLouvrePyramid />,
-      },
-      {
-        name: "stacked",
-        icon: <AiOutlineBarChart />,
       },
     ],
   },
@@ -823,6 +779,7 @@ export const medicalproBranding = {
       color: "#FB9678",
     },
   ],
+  //ordersData
   leaders: [
     {
       image: avatar2,

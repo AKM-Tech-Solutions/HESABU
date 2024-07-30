@@ -1,0 +1,70 @@
+.Transactions {
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  margin: 20px;
+}
+
+.Transactions.Light {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.Transactions.Dark {
+  background-color: #33373e;
+  color: #ffffff;
+}
+
+.Transactions .e-grid {
+  background-color: inherit;
+}
+
+.Transactions.Dark .dropdown {
+  background-color: #333;
+  color: #fff;
+}
+
+.Transactions.Light .dropdown {
+  background-color: #fff;
+  color: #000;
+}
+
+.dropdown select {
+  margin-left: 10px;
+  padding: 5px;
+}
+
+.dropdown.Dark select {
+  background-color: #555;
+  color: #fff;
+}
+
+.dropdown.Light select {
+  background-color: #fff;
+  color: #000;
+}
+
+.Transactions .e-grid .e-row,
+.Transactions .e-grid .e-headercell,
+.Transactions .e-grid .e-rowcell,
+.Transactions .e-grid .e-gridheader,
+.Transactions .e-grid .e-gridpager {
+  background-color: inherit;
+  color: inherit;
+}
+
+.Transactions.Light .e-grid .e-row,
+.Transactions.Light .e-grid .e-headercell,
+.Transactions.Light .e-grid .e-rowcell,
+.Transactions.Light .e-grid .e-gridheader,
+.Transactions.Light .e-grid .e-gridpager {
+  background-color: #ffffff;
+}
+
+.Transactions.Dark .e-grid .e-row,
+.Transactions.Dark .e-grid .e-headercell,
+.Transactions.Dark .e-grid .e-rowcell,
+.Transactions.Dark .e-grid .e-gridheader,
+.Transactions.Dark .e-grid .e-gridpager {
+  background-color: #33373e;
+}
