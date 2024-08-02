@@ -1,5 +1,8 @@
 import React from "react";
-import { AiOutlineCalendar, AiOutlineStock } from "react-icons/ai";
+import { IoPeopleCircleSharp } from "react-icons/io5";
+import { FiSettings } from "react-icons/fi";
+import { FaUsers } from "react-icons/fa6";
+
 import {
   FiShoppingBag,
   FiBarChart,
@@ -128,7 +131,7 @@ export const EditorData = () => (
       but it’s harder to learn both React and JavaScript at the same time. We
       recommend going through this JavaScript overview to check your knowledge
       level. It will take you between 30 minutes and an hour but you will feel
-      more confident learning React.
+      APPS more confident learning React.
     </h3>
   </div>
 );
@@ -534,20 +537,19 @@ export const links = [
     ],
   },
   {
-    title: "Apps",
+    title: "Config",
     links: [
       {
-        name: "calendar",
-        icon: <AiOutlineCalendar />,
+        name: "profile",
+        icon: <IoPeopleCircleSharp />,
       },
-    ],
-  },
-  {
-    title: "Charts",
-    links: [
       {
-        name: "line",
-        icon: <AiOutlineStock />,
+        name: "users",
+        icon: <FaUsers />,
+      },
+      {
+        name: "settings",
+        icon: <FiSettings />,
       },
     ],
   },

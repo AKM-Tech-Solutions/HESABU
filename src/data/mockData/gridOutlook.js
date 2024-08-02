@@ -6,7 +6,7 @@ import { GoGraph } from "react-icons/go";
 export const productsGrid = [
   {
     field: "date",
-    headerText: "Date",
+    headerText: "Last Updated",
     width: "135",
     textAlign: "Center",
   },
@@ -17,14 +17,26 @@ export const productsGrid = [
     textAlign: "Center",
   },
   {
-    field: "catId",
-    headerText: "Category ID",
+    field: "cat",
+    headerText: "Category",
     width: "120",
     textAlign: "Center",
   },
   {
-    field: "defaultPrice",
-    headerText: "Default Price",
+    field: "averageCost",
+    headerText: "Average Cost",
+    width: "120",
+    textAlign: "Center",
+  },
+  {
+    field: "latestCost",
+    headerText: "Latest Cost",
+    width: "120",
+    textAlign: "Center",
+  },
+  {
+    field: "salesPrice",
+    headerText: "Sales Price",
     width: "120",
     textAlign: "Center",
   },
@@ -61,6 +73,12 @@ export const transactionsGrid = [
     textAlign: "Center",
   },
   {
+    field: "salesPrice",
+    headerText: "Sales Price",
+    width: "120",
+    textAlign: "Center",
+  },
+  {
     field: "total",
     headerText: "Total",
     width: "135",
@@ -74,25 +92,64 @@ export const categoriesGrid = [
     headerText: "Category Image",
     template: (props) => {
       if (props.image) {
-        return `<img src="${props.image}" alt="${props.name}" style="width:40px; height:40px; " />`;
+        return `<img src="${props.image}" alt="${props.name}" style="width:10px; height:10px; border-radius: 9999px " />`;
       } else {
         return `<span>No Image</span>`;
       }
     },
-    width: "120",
+    width: "40",
+    height: "40",
 
     textAlign: "Center",
   },
   {
     field: "name",
     headerText: "Category Name",
-    width: "135",
+    width: "40",
+    height: "40",
+
     textAlign: "Center",
   },
   {
-    field: "catId",
-    headerText: "Category ID",
-    width: "120",
+    field: "type",
+    headerText: "Type",
+    width: "40",
+    height: "40",
+
+    textAlign: "Center",
+  },
+];
+export const usersGrid = [
+  {
+    field: "date",
+    headerText: "Date Employed",
+    width: "40",
+    height: "40",
+
+    textAlign: "Center",
+  },
+  {
+    field: "name",
+    headerText: "User Name",
+    width: "40",
+    height: "40",
+
+    textAlign: "Center",
+  },
+  {
+    field: "email",
+    headerText: "Email",
+    width: "40",
+    height: "40",
+
+    textAlign: "Center",
+  },
+  {
+    field: "password",
+    headerText: "Password",
+    width: "40",
+    height: "40",
+
     textAlign: "Center",
   },
 ];

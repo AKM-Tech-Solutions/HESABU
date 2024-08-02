@@ -9,17 +9,23 @@ import {
   Toolbar,
 } from "@syncfusion/ej2-react-grids";
 import { Header } from "../components";
-import { categoriesGrid } from "../data/mockData/gridOutlook";
+import { usersGrid } from "../data/mockData/gridOutlook";
 
-const Categories = () => {
+const Users = () => {
+  const getTodayDate = () => {
+    const today = new Date();
+    return today.toISOString().split("T")[0];
+  };
+
   const toolbarOptions = ["Search"];
 
-  const [categoryData, setCategoryData] = useState([]);
+  const [userData, setUserData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
-    image: "",
+    date: getTodayDate(),
     name: "",
-    type: "",
+    email: "",
+    password: "",
   });
 
   const toggleModal = () => {
@@ -31,76 +37,44 @@ const Categories = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const validTypes = ["image/jpeg", "image/png", "image/gif", "image/jpg"];
-      if (!validTypes.includes(file.type)) {
-        alert("Please upload a valid image file (jpeg, png, gif).");
-        return;
-      }
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setFormData({ ...formData, image: reader.result });
-        console.log(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleAddCategory = () => {
-    const newCategory = {
-      id: categoryData.length + 1,
+  const handleAddUser = () => {
+    const newUser = {
+      id: userData.length + 1,
       ...formData,
     };
 
-    console.log(newCategory);
-    setCategoryData([...categoryData, newCategory]);
-    setFormData({ image: "", name: "" });
+    console.log(newUser);
+    setUserData([...userData, newUser]);
+    setFormData({ date: getTodayDate(), name: "", email: "", password: "" });
     toggleModal();
-  };
-
-  const imageTemplate = (props) => {
-    if (props.image) {
-      return (
-        <div
-          dangerouslySetInnerHTML={{
-            __html: `<img src="${props.image}" alt="${props.name}" style="width:120px; height:135px; border-radius:8px;" />`,
-          }}
-        />
-      );
-    } else {
-      return <span>No Image</span>;
-    }
   };
 
   return (
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
       <div className="flex justify-between items-center mb-4">
-        <Header category="Page" title="Categories" />
+        <Header category="Page" title="Users" />
         <button
           className="bg-blue-500 text-white py-2 px-4 rounded-lg"
           onClick={toggleModal}
         >
-          Add New Category
+          Add New User
         </button>
       </div>
 
       <GridComponent
-        dataSource={categoryData}
+        dataSource={userData}
         allowPaging={true}
         pageSettings={{ pageCount: 5 }}
         editSettings={{ allowDeleting: true, allowEditing: true }}
         toolbar={toolbarOptions}
       >
         <ColumnsDirective>
-          {categoriesGrid.map((column, index) => (
+          {usersGrid.map((column, index) => (
             <ColumnDirective
               key={index}
               field={column.field}
               headerText={column.headerText}
               textAlign={column.textAlign}
-              template={column.field === "image" ? imageTemplate : null}
               width={column.width}
             />
           ))}
@@ -111,28 +85,16 @@ const Categories = () => {
       {isModalOpen && (
         <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
           <div className="bg-white rounded-lg p-8">
-            <h2 className="text-lg font-semibold mb-4">Add New Category</h2>
+            <h2 className="text-lg font-semibold mb-4">Add New User</h2>
             <div className="mb-4">
-              <label className="block text-sm mb-2">Image</label>
+              <label className="block text-sm mb-2">Date</label>
               <input
-                type="file"
-                accept="image/*"
-                className="w-30 h-30 border-gray-300 rounded-sm py-2 px-3"
-                onChange={handleFileChange}
+                type="date"
+                className="w-full border-gray-300 rounded-sm py-2 px-3"
+                name="date"
+                value={formData.date}
+                onChange={handleChange}
               />
-              {formData.image && (
-                <div className="mb-4">
-                  <img
-                    src={formData.image}
-                    alt="Preview"
-                    style={{
-                      width: "80px",
-                      height: "80px",
-                      borderRadius: "99px",
-                    }}
-                  />
-                </div>
-              )}
             </div>
             <div className="mb-4">
               <label className="block text-sm mb-2">Name</label>
@@ -144,24 +106,32 @@ const Categories = () => {
                 onChange={handleChange}
               />
             </div>
-
             <div className="mb-4">
-              <label className="block text-sm mb-2">Category Type</label>
+              <label className="block text-sm mb-2">Email</label>
               <input
-                type="text"
+                type="email"
                 className="w-full border-gray-300 rounded-sm py-2 px-3"
-                name="type"
-                value={formData.type}
+                name="email"
+                value={formData.email}
                 onChange={handleChange}
               />
             </div>
-
+            <div className="mb-4">
+              <label className="block text-sm mb-2">Password</label>
+              <input
+                type="password"
+                className="w-full border-gray-300 rounded-sm py-2 px-3"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+              />
+            </div>
             <div className="flex justify-end">
               <button
                 className="bg-blue-500 text-white py-2 px-4 rounded-lg mr-2"
-                onClick={handleAddCategory}
+                onClick={handleAddUser}
               >
-                Add Category
+                Add User
               </button>
               <button
                 className="bg-gray-200 text-gray-800 py-2 px-4 rounded-lg"
@@ -177,4 +147,4 @@ const Categories = () => {
   );
 };
 
-export default Categories;
+export default Users;
