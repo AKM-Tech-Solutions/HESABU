@@ -19,7 +19,7 @@ const Dashboard = () => {
             key={item.title}
             className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 p-3"
           >
-            <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 pt-9 rounded-2xl border border-black border-dashed">
+            <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-4 pt-9 rounded-2xl border border-gray-500">
               <p className="text-sm text-gray-400 mt-1">{item.title}</p>
               <button
                 type="button"

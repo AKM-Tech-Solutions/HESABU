@@ -56,7 +56,7 @@ const Categories = () => {
 
     console.log(newCategory);
     setCategoryData([...categoryData, newCategory]);
-    setFormData({ image: "", name: "" });
+    setFormData({ image: "", name: "", type: "" });
     toggleModal();
   };
 
@@ -65,7 +65,7 @@ const Categories = () => {
       return (
         <div
           dangerouslySetInnerHTML={{
-            __html: `<img src="${props.image}" alt="${props.name}" style="width:120px; height:135px; border-radius:8px;" />`,
+            __html: `<img src="${props.image}" alt="${props.name}" style="width:80px; height:80px; border-radius:9999px;" />`,
           }}
         />
       );
@@ -117,7 +117,7 @@ const Categories = () => {
               <input
                 type="file"
                 accept="image/*"
-                className="w-30 h-30 border-gray-300 rounded-sm py-2 px-3"
+                className="w-80 h-80 border-gray-300 rounded-sm py-2 px-3"
                 onChange={handleFileChange}
               />
               {formData.image && (

@@ -22,8 +22,6 @@ import "@syncfusion/ej2-react-grids/styles/material.css";
 const Inventory = () => {
   const toolbarOptions = ["Search..."];
 
-  const categories = ["Category1", "Category2", "Category3"]; // Example categories to fetch from categories page and backend
-
   const getTodayDate = () => {
     const today = new Date();
     return today.toISOString().split("T")[0];
@@ -32,6 +30,12 @@ const Inventory = () => {
   const [productsData, setProductsData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
+  const [isLimitModalOpen, setIsLimitModalOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [quantityLimits, setQuantityLimits] = useState({});
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [currentEditProduct, setCurrentEditProduct] = useState(null);
+
   const [formData, setFormData] = useState({
     date: getTodayDate(),
     name: "",
@@ -41,6 +45,7 @@ const Inventory = () => {
     salesPrice: 0,
     total: 0,
   });
+
   const [inventoryHistory, setInventoryHistory] = useState([]);
   const [historyData, setHistoryData] = useState([]);
 
@@ -61,6 +66,11 @@ const Inventory = () => {
     setIsHistoryModalOpen(!isHistoryModalOpen);
   };
 
+  const toggleLimitModal = () => {
+    setSelectedProduct(null);
+    setIsLimitModalOpen(!isLimitModalOpen);
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -72,20 +82,30 @@ const Inventory = () => {
     });
   };
 
+  const handleLimitChange = (e) => {
+    const { value } = e.target;
+    setQuantityLimits((prevLimits) => ({
+      ...prevLimits,
+      [selectedProduct]: parseInt(value, 10) || 0,
+    }));
+  };
+
   const handleAddProduct = () => {
+    if (isEditMode) {
+      handleUpdateProduct();
+      return;
+    }
+
     const newProductTotal = formData.latestCost * formData.quantity;
 
-    // Create a new product addition record latestCost
     const newProduct = {
       id: historyData.length + 1,
       ...formData,
       total: newProductTotal,
     };
 
-    // Add this record to history
     setHistoryData([...historyData, newProduct]);
 
-    // Update productsData to show the latest state of cat *
     const existingProductIndex = productsData.findIndex(
       (product) =>
         product.name === formData.name && product.cat === formData.cat
@@ -97,8 +117,8 @@ const Inventory = () => {
       updatedProduct.total += newProductTotal;
       updatedProduct.latestCost = formData.latestCost;
       updatedProduct.date = formData.date;
+      updatedProduct.salesPrice = formData.salesPrice;
 
-      // Get the two latest cost entries
       const latestCosts = historyData
         .filter(
           (product) =>
@@ -109,7 +129,6 @@ const Inventory = () => {
 
       latestCosts.push(formData.latestCost);
 
-      // Calculate the average cost of the latest two entries
       updatedProduct.averageCost =
         latestCosts.reduce((acc, cost) => acc + cost, 0) / latestCosts.length;
 
@@ -140,10 +159,54 @@ const Inventory = () => {
     toggleModal();
   };
 
+  const handleUpdateProduct = () => {
+    const updatedProducts = productsData.map((product) =>
+      product.id === currentEditProduct.id
+        ? {
+            ...product,
+            ...formData,
+            total: formData.latestCost * formData.quantity,
+          }
+        : product
+    );
+
+    setProductsData(updatedProducts);
+
+    setFormData({
+      date: getTodayDate(),
+      name: "",
+      cat: "",
+      latestCost: 0,
+      quantity: 0,
+      salesPrice: 0,
+    });
+
+    setIsEditMode(false);
+    setCurrentEditProduct(null);
+    toggleModal();
+  };
+
   const handleCellRender = (args) => {
+    if (args.column.field === "actions") {
+      const editButton = args.cell.querySelector(".edit-btn");
+      const deleteButton = args.cell.querySelector(".delete-btn");
+
+      if (editButton) {
+        editButton.addEventListener("click", () => handleEdit(args.data));
+      }
+
+      if (deleteButton) {
+        deleteButton.addEventListener("click", () =>
+          handleDelete(args.data.id)
+        );
+      }
+    }
+
     if (args.column.field === "quantity") {
       const quantity = args.data[args.column.field];
-      if (quantity && parseInt(quantity) < 25) {
+      const category = args.data.name;
+      const limit = quantityLimits[category];
+      if (quantity && parseInt(quantity) < limit) {
         args.cell.classList.add("red");
       } else {
         args.cell.classList.remove("red");
@@ -151,9 +214,31 @@ const Inventory = () => {
     }
   };
 
+  const handleEdit = (product) => {
+    setIsEditMode(true);
+    setCurrentEditProduct(product);
+    setFormData({
+      date: product.date,
+      name: product.name,
+      cat: product.cat,
+      latestCost: product.latestCost,
+      quantity: product.quantity,
+      salesPrice: product.salesPrice,
+    });
+    toggleModal();
+  };
+
+  const handleDelete = (productId) => {
+    if (window.confirm("Are you sure you want to delete this product?")) {
+      const updatedProducts = productsData.filter(
+        (product) => product.id !== productId
+      );
+      setProductsData(updatedProducts);
+    }
+  };
+
   const handleRowSelected = (args) => {
     const selectedRecord = args.data;
-    // Filter the history to get records for the selected
     const history = historyData.filter(
       (product) =>
         product.name === selectedRecord.name &&
@@ -163,17 +248,37 @@ const Inventory = () => {
     toggleHistoryModal();
   };
 
+  const getProductOptions = () => {
+    const productOptions = productsData.map((product, index) => ({
+      id: index,
+      name: product.name,
+    }));
+    return productOptions;
+  };
+
+  const categories = ["Category1", "Category2", "Category3"];
+
   return (
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
       <div className="flex justify-between items-center mb-4">
         <Header category="Page" title="Inventory" />
-
-        <button
-          className="bg-blue-500 text-white py-2 px-4 rounded-lg"
-          onClick={toggleModal}
-        >
-          Add New Product
-        </button>
+        <div className="flex">
+          <button
+            className="bg-blue-500 text-white py-2 px-4 rounded-lg mr-2"
+            onClick={() => {
+              setIsEditMode(false);
+              toggleModal();
+            }}
+          >
+            Add New Product
+          </button>
+          <button
+            className="bg-green-500 text-white py-2 px-4 rounded-lg"
+            onClick={toggleLimitModal}
+          >
+            Set Quantity Limit
+          </button>
+        </div>
       </div>
 
       <GridComponent
@@ -191,27 +296,21 @@ const Inventory = () => {
               key={index}
               field={column.field}
               headerText={column.headerText}
+              width={column.width}
               textAlign={column.textAlign}
+              template={column.template}
             />
           ))}
         </ColumnsDirective>
-        <ColumnDirective
-          field="averageCost"
-          headerText="Average Cost"
-          textAlign="Right"
-        />
-        <ColumnDirective
-          field="salesPrice"
-          headerText="Sales Price"
-          textAlign="Right"
-        />
         <Inject services={[Search, Page, Toolbar]} />
       </GridComponent>
 
       {isModalOpen && (
         <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
           <div className="bg-white rounded-lg p-8">
-            <h2 className="text-lg font-semibold mb-4">Add New Product</h2>
+            <h2 className="text-lg font-semibold mb-4">
+              {isEditMode ? "Edit Product" : "Add New Product"}
+            </h2>
             <div className="mb-4">
               <label className="block text-sm mb-2">Date</label>
               <input
@@ -235,9 +334,17 @@ const Inventory = () => {
             <div className="mb-4">
               <label className="block text-sm mb-2">Category</label>
               <DropDownListComponent
-                dataSource={categories}
+                id="categories"
+                fields={{ text: "category", value: "id" }}
+                dataSource={categories.map((cat, index) => ({
+                  id: index,
+                  category: cat,
+                }))}
                 placeholder="Select a category"
-                change={(e) => setFormData({ ...formData, cat: e.value })}
+                change={(e) =>
+                  setFormData({ ...formData, cat: e.itemData.category })
+                }
+                value={formData.cat}
               />
             </div>
             <div className="mb-4">
@@ -275,10 +382,10 @@ const Inventory = () => {
                 className="bg-blue-500 text-white py-2 px-4 rounded-lg mr-2"
                 onClick={handleAddProduct}
               >
-                Add Product
+                {isEditMode ? "Update" : "Save"}
               </button>
               <button
-                className="bg-gray-200 text-gray-800 py-2 px-4 rounded-lg"
+                className="bg-gray-500 text-white py-2 px-4 rounded-lg"
                 onClick={toggleModal}
               >
                 Cancel
@@ -292,37 +399,87 @@ const Inventory = () => {
         <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
           <div className="bg-white rounded-lg p-8">
             <h2 className="text-lg font-semibold mb-4">Inventory History</h2>
-
-            <table className="min-w-full bg-white">
-              <thead>
-                <tr>
-                  <th className="py-2 px-4 border-b">Date</th>
-                  <th className="py-2 px-4 border-b">Name</th>
-                  <th className="py-2 px-4 border-b">Category ID</th>
-                  <th className="py-2 px-4 border-b">Latest Cost</th>
-                  <th className="py-2 px-4 border-b">Quantity</th>
-                  <th className="py-2 px-4 border-b">Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                {inventoryHistory.map((product, index) => (
-                  <tr key={index}>
-                    <td className="py-2 px-4 border-b">{product.date}</td>
-                    <td className="py-2 px-4 border-b">{product.name}</td>
-                    <td className="py-2 px-4 border-b">{product.cat}</td>
-                    <td className="py-2 px-4 border-b">{product.latestCost}</td>
-                    <td className="py-2 px-4 border-b">{product.quantity}</td>
-                    <td className="py-2 px-4 border-b">{product.total}</td>
+            <div className="max-h-96 overflow-y-auto">
+              <table className="min-w-full bg-white">
+                <thead>
+                  <tr>
+                    <th className="py-2 px-4 border-b">Date</th>
+                    <th className="py-2 px-4 border-b">Name</th>
+                    <th className="py-2 px-4 border-b">Category</th>
+                    <th className="py-2 px-4 border-b">Latest Cost</th>
+                    <th className="py-2 px-4 border-b">Quantity</th>
+                    <th className="py-2 px-4 border-b">Sales Price</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {inventoryHistory.map((product, index) => (
+                    <tr key={index}>
+                      <td className="py-2 px-4 border-b">{product.date}</td>
+                      <td className="py-2 px-4 border-b">{product.name}</td>
+                      <td className="py-2 px-4 border-b">{product.cat}</td>
+                      <td className="py-2 px-4 border-b">
+                        {product.latestCost}
+                      </td>
+                      <td className="py-2 px-4 border-b">{product.quantity}</td>
+                      <td className="py-2 px-4 border-b">
+                        {product.salesPrice}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
             <div className="flex justify-end mt-4">
               <button
-                className="bg-gray-200 text-gray-800 py-2 px-4 rounded-lg"
+                className="bg-gray-500 text-white py-2 px-4 rounded-lg"
                 onClick={toggleHistoryModal}
               >
                 Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {isLimitModalOpen && (
+        <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white rounded-lg p-8">
+            <h2 className="text-lg font-semibold mb-4">Set Quantity Limit</h2>
+            <div className="mb-4">
+              <label className="block text-sm mb-2">Product</label>
+              <DropDownListComponent
+                id="products"
+                fields={{ text: "name", value: "id" }}
+                dataSource={getProductOptions()}
+                placeholder="Select a product"
+                change={(e) => setSelectedProduct(e.itemData.name)}
+                value={selectedProduct}
+              />
+            </div>
+            {selectedProduct && (
+              <div className="mb-4">
+                <label className="block text-sm mb-2">Quantity Limit</label>
+                <input
+                  type="number"
+                  className="w-full border-gray-300 rounded-sm py-2 px-3"
+                  name="limit"
+                  value={quantityLimits[selectedProduct] || ""}
+                  onChange={handleLimitChange}
+                />
+              </div>
+            )}
+            <div className="flex justify-end">
+              <button
+                className="bg-blue-500 text-white py-2 px-4 rounded-lg mr-2"
+                onClick={toggleLimitModal}
+              >
+                Save
+              </button>
+              <button
+                className="bg-gray-500 text-white py-2 px-4 rounded-lg"
+                onClick={toggleLimitModal}
+              >
+                Cancel
               </button>
             </div>
           </div>

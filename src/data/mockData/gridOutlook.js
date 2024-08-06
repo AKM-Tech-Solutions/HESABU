@@ -12,7 +12,7 @@ export const productsGrid = [
   },
   {
     field: "name",
-    headerText: "Products Name",
+    headerText: "Product Name",
     width: "135",
     textAlign: "Center",
   },
@@ -52,7 +52,16 @@ export const productsGrid = [
     width: "135",
     textAlign: "Center",
   },
+  {
+    field: "actions",
+    headerText: "Actions",
+    width: "180",
+    template:
+      '<button class="edit-btn">Edit</button><button class="delete-btn">Delete</button>',
+    textAlign: "Center",
+  },
 ];
+
 export const transactionsGrid = [
   {
     field: "date",
@@ -62,7 +71,7 @@ export const transactionsGrid = [
   },
   {
     field: "name",
-    headerText: "Products Name",
+    headerText: "Product Name",
     width: "135",
     textAlign: "Center",
   },
@@ -92,33 +101,28 @@ export const categoriesGrid = [
     headerText: "Category Image",
     template: (props) => {
       if (props.image) {
-        return `<img src="${props.image}" alt="${props.name}" style="width:10px; height:10px; border-radius: 9999px " />`;
+        return `<img src="${props.image}" alt="${props.name}" style="width:80px; height:80px; border-radius:9999px;" />`;
       } else {
         return `<span>No Image</span>`;
       }
     },
-    width: "40",
-    height: "40",
-
-    textAlign: "Center",
+    width: "50",
+    itemAlign: "Center",
   },
   {
     field: "name",
     headerText: "Category Name",
-    width: "40",
-    height: "40",
-
+    width: "100",
     textAlign: "Center",
   },
   {
     field: "type",
     headerText: "Type",
-    width: "40",
-    height: "40",
-
+    width: "100",
     textAlign: "Center",
   },
 ];
+
 export const usersGrid = [
   {
     field: "date",
@@ -216,49 +220,49 @@ export const graphData = [
 
 export const transactionsData = [
   {
-    date: "01/01/2024",
+    date: "01/02/2024",
     name: "Best",
     quantity: 200,
     total: 10000,
   },
   {
-    date: "01/01/2024",
+    date: "01/02/2024",
     name: "Chrome",
     quantity: 200,
     total: 10000,
   },
   {
-    date: "01/01/2024",
+    date: "01/02/2024",
     name: "KC",
     quantity: 200,
     total: 10000,
   },
   {
-    date: "01/01/2024",
+    date: "01/02/2024",
     name: "KK",
     quantity: 200,
     total: 10000,
   },
   {
-    date: "01/01/2024",
+    date: "01/02/2024",
     name: "Smirnoff",
     quantity: 200,
     total: 10000,
   },
   {
-    date: "01/01/2024",
+    date: "01/02/2024",
     name: "Gilbeys",
     quantity: 200,
     total: 10000,
   },
   {
-    date: "01/01/2024",
+    date: "01/02/2024",
     name: "Captain morgan",
     quantity: 200,
     total: 10000,
   },
   {
-    date: "01/01/2024",
+    date: "01/02/2024",
     name: "Geaneral Meakins",
     quantity: 200,
     total: 10000,
