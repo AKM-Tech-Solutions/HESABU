@@ -16,13 +16,25 @@ const Categories = () => {
 
   const [categoryData, setCategoryData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingCategory, setEditingCategory] = useState(null);
+
   const [formData, setFormData] = useState({
     image: "",
     name: "",
     type: "",
   });
 
-  const toggleModal = () => {
+  const toggleModal = (category = null) => {
+    setEditingCategory(category);
+    if (category) {
+      setFormData({
+        image: category.image || "",
+        name: category.name || "",
+        type: category.type || "",
+      });
+    } else {
+      setFormData({ image: "", name: "", type: "" });
+    }
     setIsModalOpen(!isModalOpen);
   };
 
@@ -42,45 +54,97 @@ const Categories = () => {
       const reader = new FileReader();
       reader.onloadend = () => {
         setFormData({ ...formData, image: reader.result });
-        console.log(reader.result);
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const handleAddCategory = () => {
-    const newCategory = {
-      id: categoryData.length + 1,
-      ...formData,
-    };
+  const generateRandomColor = () => {
+    const letters = "0123456789ABCDEF";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
 
-    console.log(newCategory);
-    setCategoryData([...categoryData, newCategory]);
+  const handleAddOrUpdateCategory = () => {
+    if (editingCategory) {
+      // Update existing category
+      const updatedCategoryData = categoryData.map((cat) =>
+        cat.id === editingCategory.id
+          ? { ...editingCategory, ...formData }
+          : cat
+      );
+      setCategoryData(updatedCategoryData);
+    } else {
+      // Add new category
+      const newCategory = {
+        id: categoryData.length + 1,
+        ...formData,
+        backgroundColor: generateRandomColor(),
+      };
+      setCategoryData([...categoryData, newCategory]);
+    }
     setFormData({ image: "", name: "", type: "" });
     toggleModal();
+  };
+
+  const handleDelete = (id) => {
+    if (window.confirm("Are you sure you want to delete this category?")) {
+      const updatedCategoryData = categoryData.filter((cat) => cat.id !== id);
+      setCategoryData(updatedCategoryData);
+    }
   };
 
   const imageTemplate = (props) => {
     if (props.image) {
       return (
-        <div
-          dangerouslySetInnerHTML={{
-            __html: `<img src="${props.image}" alt="${props.name}" style="width:80px; height:80px; border-radius:9999px;" />`,
-          }}
-        />
+        <div className="flex justify-center items-center">
+          <img
+            src={props.image}
+            alt={props.name}
+            style={{ width: "80px", height: "80px", borderRadius: "50%" }}
+          />
+        </div>
       );
     } else {
-      return <span>No Image</span>;
+      return <div className="flex justify-center items-center">No Image</div>;
+    }
+  };
+
+  const actionTemplate = (props) => {
+    return (
+      <div className=" ml-20 flex gap-5">
+        <button
+          className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-800"
+          onClick={() => toggleModal(props)}
+        >
+          Edit
+        </button>
+        <button
+          className="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-800"
+          onClick={() => handleDelete(props.id)}
+        >
+          Delete
+        </button>
+      </div>
+    );
+  };
+
+  const onQueryCellInfo = (args) => {
+    if (args.data.backgroundColor) {
+      args.cell.style.backgroundColor = args.data.backgroundColor;
     }
   };
 
   return (
-    <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
+    <div className="m-2 md:m-10 mt-24 p-4 md:p-10 bg-white rounded-lg shadow-md">
       <div className="flex justify-between items-center mb-4">
         <Header category="Page" title="Categories" />
         <button
-          className="bg-blue-500 text-white py-2 px-4 rounded-lg"
-          onClick={toggleModal}
+          className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
+          onClick={() => toggleModal(null)}
         >
           Add New Category
         </button>
@@ -92,6 +156,7 @@ const Categories = () => {
         pageSettings={{ pageCount: 5 }}
         editSettings={{ allowDeleting: true, allowEditing: true }}
         toolbar={toolbarOptions}
+        queryCellInfo={onQueryCellInfo}
       >
         <ColumnsDirective>
           {categoriesGrid.map((column, index) => (
@@ -104,32 +169,37 @@ const Categories = () => {
               width={column.width}
             />
           ))}
+          <ColumnDirective
+            headerText="Actions"
+            template={actionTemplate}
+            textAlign="Center"
+            headerTextAlign="Center"
+            width="80"
+          />
         </ColumnsDirective>
         <Inject services={[Search, Page, Toolbar]} />
       </GridComponent>
 
       {isModalOpen && (
-        <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white rounded-lg p-8">
-            <h2 className="text-lg font-semibold mb-4">Add New Category</h2>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white rounded-lg p-8 max-w-md w-full">
+            <h2 className="text-lg font-semibold mb-4">
+              {editingCategory ? "Edit Category" : "Add New Category"}
+            </h2>
             <div className="mb-4">
               <label className="block text-sm mb-2">Image</label>
               <input
                 type="file"
                 accept="image/*"
-                className="w-80 h-80 border-gray-300 rounded-sm py-2 px-3"
+                className="w-full border border-gray-300 rounded-md py-2 px-3"
                 onChange={handleFileChange}
               />
               {formData.image && (
-                <div className="mb-4">
+                <div className="mt-4 flex justify-center">
                   <img
                     src={formData.image}
                     alt="Preview"
-                    style={{
-                      width: "80px",
-                      height: "80px",
-                      borderRadius: "99px",
-                    }}
+                    className="w-20 h-20 rounded-full"
                   />
                 </div>
               )}
@@ -138,7 +208,7 @@ const Categories = () => {
               <label className="block text-sm mb-2">Name</label>
               <input
                 type="text"
-                className="w-full border-gray-300 rounded-sm py-2 px-3"
+                className="w-full border border-gray-300 rounded-md py-2 px-3"
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
@@ -149,23 +219,23 @@ const Categories = () => {
               <label className="block text-sm mb-2">Category Type</label>
               <input
                 type="text"
-                className="w-full border-gray-300 rounded-sm py-2 px-3"
+                className="w-full border border-gray-300 rounded-md py-2 px-3"
                 name="type"
                 value={formData.type}
                 onChange={handleChange}
               />
             </div>
 
-            <div className="flex justify-end">
+            <div className="flex justify-end gap-2">
               <button
-                className="bg-blue-500 text-white py-2 px-4 rounded-lg mr-2"
-                onClick={handleAddCategory}
+                className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
+                onClick={handleAddOrUpdateCategory}
               >
-                Add Category
+                {editingCategory ? "Update Category" : "Add Category"}
               </button>
               <button
-                className="bg-gray-200 text-gray-800 py-2 px-4 rounded-lg"
-                onClick={toggleModal}
+                className="bg-gray-200 text-gray-800 py-2 px-4 rounded-lg hover:bg-gray-300"
+                onClick={() => toggleModal(null)}
               >
                 Cancel
               </button>

@@ -119,6 +119,7 @@ export const categoriesGrid = [
     field: "type",
     headerText: "Type",
     width: "100",
+
     textAlign: "Center",
   },
 ];
